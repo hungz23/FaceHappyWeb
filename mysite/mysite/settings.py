@@ -25,12 +25,13 @@ SECRET_KEY = 'f-n0vf25u4siwzt!&a-yxjhs2@$rwd(#__bper9ztu63u71oda'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.33.10']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'sslserver',
     'polls.apps.PollsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,7 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'webcam',
+    'bootstrap3',
+    'jquery',
+    # 'django_comments',
+    # 'mptt',
+    # 'tagging',
+    # 'zinnia',
 ]
 
 MIDDLEWARE = [
@@ -64,6 +70,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'django.template.context_processors.i18n',
+                # 'zinnia.context_processors.version',  # Optional
             ],
         },
     },
@@ -120,3 +128,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# HTTPS_SUPPORT = True
+# SECURE_SSL_REDIRECT = False
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

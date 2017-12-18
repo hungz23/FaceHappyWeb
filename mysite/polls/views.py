@@ -7,29 +7,29 @@ import re
 import os
 import datetime
 
-# import cv2
-# import sys
-# import json
-# import time
-# import numpy as np
-# from keras.models import model_from_json
+import cv2
+import sys
+import json
+import time
+import numpy as np
+from keras.models import model_from_json
 
-# # load json and create model arch
-# json_file = open('model.json','r')
-# loaded_model_json = json_file.read()
-# json_file.close()
-# model = model_from_json(loaded_model_json)
+# load json and create model arch
+json_file = open('model.json','r')
+loaded_model_json = json_file.read()
+json_file.close()
+model = model_from_json(loaded_model_json)
 
-# # load weights into new model
-# model.load_weights('model.h5')
+# load weights into new model
+model.load_weights('model.h5')
 
-# def predict_emotion(face_image_gray): # a single cropped face
-#     resized_img = cv2.resize(face_image_gray, (48,48), interpolation = cv2.INTER_AREA)
-#     # cv2.imwrite(str(index)+'.png', resized_img)
-#     image = resized_img.reshape(1, 1, 48, 48)
-#     list_of_list = model.predict(image, batch_size=1, verbose=1)
-#     angry, fear, happy, sad, surprise, neutral = [prob for lst in list_of_list for prob in lst]
-#     return [angry, fear, happy, sad, surprise, neutral]
+def predict_emotion(face_image_gray): # a single cropped face
+    resized_img = cv2.resize(face_image_gray, (48,48), interpolation = cv2.INTER_AREA)
+    # cv2.imwrite(str(index)+'.png', resized_img)
+    image = resized_img.reshape(1, 1, 48, 48)
+    list_of_list = model.predict(image, batch_size=1, verbose=1)
+    angry, fear, happy, sad, surprise, neutral = [prob for lst in list_of_list for prob in lst]
+    return [angry, fear, happy, sad, surprise, neutral]
 
 
 
@@ -86,4 +86,61 @@ def demo(request):
             f.write(imgdata)
         return render(request, 'polls/demo.html', {'email': dirname})
     return render(request, 'polls/demo.html')
-        
+
+def align(request):
+    os.system("export PYTHONPATH=./facenet/src")
+    os.system("python ./facenet/src/align/align_dataset_mtcnn.py\
+     ./UserImage\
+     ./UserImage_Align\
+     --image_size 182 --margin 44")
+    return render(request, 'polls/demo.html')
+
+def train(request):
+    os.system("python ./facenet/src/classifier.py TRAIN\
+     ./UserImage_Align\
+     ./ModelsForTrain/20170511-185253.pb\
+     ./models/lfw_classifier.pkl --batch_size 5")
+    return render(request, 'polls/demo.html')
+
+def makeEmotion(email, L):
+    from .models import Emotion
+    emotion = Emotion(email=email,angry=L[0],fear=L[1],happy=L[2],sad=L[3],
+    surprise=L[4],neutral=L[5])
+    emotion.save()
+
+def getimage(request):
+    import base64
+    if request.method == 'POST':
+        data = request.POST.get('image','')
+        if(data==''):
+            return render(request, 'polls/webcam.html')
+        directory = os.path.join(os.curdir+"/Temp/Image")
+        os.mkdir("Temp")
+        os.mkdir("Temp/Image")
+        aligneddirectory = os.path.join(os.curdir+"/Temp_Align/Image")
+        data = re.sub('data:image/png;base64,','',data)
+        missing_padding = len(data) % 4
+        imgdata = base64.b64decode(data)
+        now = datetime.datetime.now()
+        filename = directory+'/'+str(now).replace(":","")+".png"
+        alignedfilename = aligneddirectory + '/'+str(now).replace(":","")+".png"
+        with open(filename, 'wb') as f:
+            f.write(imgdata)
+        os.system("export PYTHONPATH=./facenet/src")
+        os.system("python ./facenet/src/align/align_dataset_mtcnn.py\
+         ./Temp\
+         ./Temp_Align\
+         --image_size 182 --margin 44")
+        imgdata = cv2.imread(alignedfilename, 0)
+        L = predict_emotion(imgdata)
+        os.system("python ./facenet/src/classifier.py\
+         CLASSIFY Temp_Align/\
+         ModelsForTrain/20170511-185253.pb\
+         models/lfw_classifier.pkl --batch 5")
+        f = open("result.txt","r")
+        email = f.read().splitlines()[0]
+        makeEmotion(email,L)
+        os.system("rm -rf Temp")
+        os.system("rm -rf Temp_Align")
+        return render(request, 'polls/webcam.html')
+    return render(request, 'polls/webcam.html')

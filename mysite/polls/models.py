@@ -7,11 +7,7 @@ from django.db import models
 from django.db import models
 from django import forms
 import datetime
-
-class Person(models.Model):
-    name = models.CharField(max_length=512)
-    image = models.ImageField(blank=True, null=True)
-
+import os
 
 class Question(models.Model):
     question_text = models.CharField(max_length=256)
@@ -30,5 +26,12 @@ class Emotion(models.Model):
 	happy = models.FloatField()
 	sad = models.FloatField()
 	surprise = models.FloatField()
-	neutral = models.FloatField() 
+	neutral = models.FloatField()
 
+class Training(models.Model):
+    name = models.CharField(max_length=256)
+    def train():
+        os.system("python src/align/align_dataset_mtcnn.py\
+         ./UserImage\
+         ./UserImage_Align\
+         --image_size 182 --margin 44")

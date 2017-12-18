@@ -18,6 +18,15 @@
   }, errorCallback);
 </script>
  -->
+ {# Load the tag library #}
+ {% load bootstrap3 %}
+
+ {# Load CSS and JavaScript #}
+ {% bootstrap_css %}
+ {% bootstrap_javascript %}
+
+ {# Display django.contrib.messages as Bootstrap alerts #}
+ {% bootstrap_messages %}
 
 
 <form action="{% url 'polls:demo' %}" method="post">
@@ -66,5 +75,6 @@
     localMediaStream = stream;
   }, errorCallback);
 </script>
-<input type="submit" value="Submit" />
+<!-- <input type="submit" value="Submit" /> -->
+<button type="submit" class="btn btn-primary">Submit</button>
 </form>
