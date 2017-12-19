@@ -1,0 +1,28 @@
+{% load static %}
+<!-- Top menu -->
+<nav class="navbar navbar-inverse" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'polls:index' %}">
+      </a>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="top-navbar-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{% url 'polls:index' %}">Home</a></li>
+        <li><a href="{% url 'polls:imageup' %}">Upload Image To Server</a></li>
+        <li><a href="{% url 'polls:align' %}">Admin Align</a></li>
+        <li><a href="{% url 'polls:train' %}">Admin Training</a></li>
+        <li><a href="{% url 'polls:getimage' %}">Upload Your Emotion</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Faq</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>

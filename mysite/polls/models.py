@@ -11,7 +11,7 @@ import os
 
 class Question(models.Model):
     question_text = models.CharField(max_length=256)
-    pub_date = models.DateTimeField(datetime.date.today())
+    pub_date = models.DateTimeField(default = datetime.date.today())
 
 
 class Choice(models.Model):
@@ -20,13 +20,14 @@ class Choice(models.Model):
     votes = models.IntegerField(default=0)
 
 class Emotion(models.Model):
-	email = models.EmailField()
-	angry = models.FloatField()
-	fear = models.FloatField()
-	happy = models.FloatField()
-	sad = models.FloatField()
-	surprise = models.FloatField()
-	neutral = models.FloatField()
+    email = models.EmailField()
+    angry = models.FloatField()
+    fear = models.FloatField()
+    happy = models.FloatField()
+    sad = models.FloatField()
+    surprise = models.FloatField()
+    neutral = models.FloatField()
+    date = models.DateTimeField(default = datetime.date.today())
 
 class Training(models.Model):
     name = models.CharField(max_length=256)

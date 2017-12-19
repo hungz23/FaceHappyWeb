@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import loader
 import re
 import os
@@ -13,6 +13,10 @@ import json
 import time
 import numpy as np
 from keras.models import model_from_json
+from django.conf.urls import url
+from django.contrib.auth.decorators import user_passes_test
+
+from django.contrib.admin.views.decorators import staff_member_required
 
 # load json and create model arch
 json_file = open('model.json','r')
@@ -57,6 +61,7 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
+
 def detail(request, question_id):
     try:
         question = Question.objects.get(pk=question_id)
@@ -67,7 +72,7 @@ def detail(request, question_id):
 # def demo(request):
 # 	return render(request, 'polls/demo.html')
 
-def demo(request):
+def imageup(request):
     import base64
     if request.method == 'POST':
         dirname = request.POST.get('email')
@@ -76,7 +81,7 @@ def demo(request):
             os.mkdir(directory)
         data = request.POST.get('image','')
         if(data==''):
-            return render(request, 'polls/demo.html', {'email': dirname})
+            return render(request, 'polls/imageup.html', {'email': dirname})
         data = re.sub('data:image/png;base64,','',data)
         missing_padding = len(data) % 4
         imgdata = base64.b64decode(data)
@@ -84,23 +89,31 @@ def demo(request):
         filename = directory+'/'+str(now).replace(":","")+".png"
         with open(filename, 'wb') as f:
             f.write(imgdata)
-        return render(request, 'polls/demo.html', {'email': dirname})
-    return render(request, 'polls/demo.html')
+        return render(request, 'polls/imageup.html', {'email': dirname})
+    return render(request, 'polls/imageup.html')
 
+@staff_member_required
 def align(request):
-    os.system("export PYTHONPATH=./facenet/src")
+    os.system("export PYTHONPATH=/vagrant/django/FaceHappyWeb/mysite/facenet/src")
     os.system("python ./facenet/src/align/align_dataset_mtcnn.py\
      ./UserImage\
      ./UserImage_Align\
      --image_size 182 --margin 44")
-    return render(request, 'polls/demo.html')
+    os.system("rm ./UserImage_Align/bounding_boxes*")
+    os.system("rm ./UserImage_Align/revision_info")
+    # response = "ALign complete"
+    # HttpResponse(response)
+    return redirect('/polls/')
 
+@staff_member_required
 def train(request):
     os.system("python ./facenet/src/classifier.py TRAIN\
      ./UserImage_Align\
      ./ModelsForTrain/20170511-185253.pb\
      ./models/lfw_classifier.pkl --batch_size 5")
-    return render(request, 'polls/demo.html')
+    # response = "Training complete"
+    # HttpResponse(response)
+    return redirect('/polls/')
 
 def makeEmotion(email, L):
     from .models import Emotion

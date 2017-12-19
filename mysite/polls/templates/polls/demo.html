@@ -18,30 +18,25 @@
   }, errorCallback);
 </script>
  -->
- {# Load the tag library #}
- {% load bootstrap3 %}
-
- {# Load CSS and JavaScript #}
- {% bootstrap_css %}
- {% bootstrap_javascript %}
-
- {# Display django.contrib.messages as Bootstrap alerts #}
- {% bootstrap_messages %}
 
 
-<form action="{% url 'polls:demo' %}" method="post">
+<form action="{% url 'polls:imageup' %}" method="post">
 {% csrf_token %}
-
-<video width="300" height="150" autoplay></video>
-<img src="" name="myimage">
+<div class="embed-responsive embed-responsive-16by9">
+  <video width="300" height="150" autoplay></video>
+</div>
+<img src="" name="myimage" class="img-responsive">
 <input type="hidden" name="image">
-{% if email %}
-  <input  name="email" placeholder="email"  required="required" value={{email}}>
-{% else%}
-  <input type="text" name="email" placeholder="email"  required="required">
-{% endif %}
+<br>
+<div class="form-group">
+  <label for="exampleInputEmail1">Email address</label>
+  {% if email %}
+    <input  name="email" placeholder="email"  required="required" value={{email}}>
+  {% else%}
+    <input type="text" name="email" placeholder="email"  required="required">
+  {% endif %}
+</div>
 <canvas style="display:none;" width="300" height="150"></canvas>
-
 <script>
 
 

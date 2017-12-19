@@ -1,55 +1,51 @@
-{# Load the tag library #}
-{% load bootstrap3 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
+    <!-- header -->
+    {%include "polls/header.html"%}
 
-{# Display django.contrib.messages as Bootstrap alerts #}
-{% bootstrap_messages %}
+    <body>
+    {%include "polls/navibar.html"%}
 
-
-<form action="{% url 'polls:getimage' %}" method="post">
-{% csrf_token %}
-
-<video width="300" height="150" autoplay></video>
-<img src="" name="myimage">
-<input type="hidden" name="image">
-<canvas style="display:none;" width="300" height="150"></canvas>
-
-<script>
-
-
- var errorCallback = function(e) {
-   console.log('Reeeejected!', e);
- };
- var video = document.querySelector('video');
- var canvas = document.querySelector('canvas');
- var ctx = canvas.getContext('2d');
- var localMediaStream = null;
- var image = new Image();
-
-
- function snapshot() {
-   if (localMediaStream) {
-     ctx.drawImage(video,0, 0, 300, 150);
-     // "image/webp" works in Chrome.
-     // Other browsers will fall back to image/png.
-     image.src = canvas.toDataURL('image/png');
-     document.querySelector('input[name="image"]').value = canvas.toDataURL('image/png');
-     document.querySelector('img').src = canvas.toDataURL('image/png');
-   }
- }
- video.addEventListener("click", snapshot, true);
+    <!-- Features -->
+    <div class="features-container section-container">
+      <div class="container">
+          <div class="row">
+              <div class="col-sm-6 features-box wow fadeInLeft">
+                <div class="row">
+                  <div class="col-sm-3 features-box-icon">
+                    <i class="fa fa-instagram"></i>
+                  </div>
+                  <div class="col-sm-9">
+                    <h3>Emotion Upload</h3>
+                    {%include "polls/webcamjs.html" %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
 
- // Not showing vendor prefixes or code that works cross-browser.
- navigator.getUserMedia({video: true}, function(stream) {
-   video.src = window.URL.createObjectURL(stream);
-   localMediaStream = stream;
- }, errorCallback);
-</script>
-<!-- <input type="submit" value="Submit" /> -->
-<button type="submit" class="btn btn-primary">Submit</button>
-</form>
+
+      <!-- footer -->
+      {% include "polls/footer.html" %}
+
+
+        <!-- Javascript -->
+        <script src="{% static "polls/assets/js/jquery-1.11.1.min.js" %}"></script>
+        <script src="{% static "polls/assets/bootstrap/js/bootstrap.min.js" %}"></script>
+        <script src="{% static "polls/assets/js/jquery.backstretch.min.js" %}"></script>
+        <script src="{% static "polls/assets/js/wow.min.js" %}"></script>
+        <script src="{% static "polls/assets/js/retina-1.1.0.min.js" %}"></script>
+        <script src="{% static "polls/assets/js/scripts.js" %}"></script>
+
+        <!--[if lt IE 10]>
+            <script src="assets/js/placeholder.js"></script>
+        <![endif]-->
+
+    </body>
+
+</html>
