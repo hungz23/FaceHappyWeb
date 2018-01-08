@@ -26,7 +26,7 @@ SECRET_KEY = 'f-n0vf25u4siwzt!&a-yxjhs2@$rwd(#__bper9ztu63u71oda'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.33.10', '0.0.0.0']
+ALLOWED_HOSTS = ['192.168.33.10', '0.0.0.0', '192.168.33.11']
 
 
 # Application definition

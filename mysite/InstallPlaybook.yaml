@@ -3,9 +3,6 @@
   remote_user: root
 
   tasks:
-  - name: install facenet requirements
-    pip:
-      requirements: /vagrant/django//FaceHappyWeb/mysite/facenet/requirements.txt
   - name: install Theano dependences python-numpy
     apt:
       name: python-numpy
@@ -17,10 +14,6 @@
   - name: install Theano dependences python-dev
     apt:
       name: python-dev
-      update_cache: yes
-  - name: install Theano dependences python-pip
-    apt:
-      name: python-pip
       update_cache: yes
   - name: install Theano dependences python-nose
     apt:
@@ -45,12 +38,25 @@
   - name: install Theano
     pip:
       name: Theano
+  - name: install Keras
+    pip:
+      name: keras
   - name: install Django
     pip:
       name: django
+      version: 1.11
   - name: install django-sslserver
     pip:
       name: django-sslserver
   - name: install celery
     pip:
       name: celery
+  - name: install django-jquery
+    pip:
+      name: django-jquery
+  - name: install django-bootstrap3
+    pip:
+      name: django-bootstrap3
+  - name: install facenet requirements
+    pip:
+      requirements: /vagrant/django/FaceHappyWeb/mysite/facenet/requirements.txt
