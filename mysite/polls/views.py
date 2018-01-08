@@ -18,23 +18,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 from django.contrib.admin.views.decorators import staff_member_required
 
-# load json and create model arch
-json_file = open('model.json','r')
-loaded_model_json = json_file.read()
-json_file.close()
-model = model_from_json(loaded_model_json)
-
-# load weights into new model
-model.load_weights('model.h5')
-
-def predict_emotion(face_image_gray): # a single cropped face
-    resized_img = cv2.resize(face_image_gray, (48,48), interpolation = cv2.INTER_AREA)
-    # cv2.imwrite(str(index)+'.png', resized_img)
-    image = resized_img.reshape(1, 1, 48, 48)
-    list_of_list = model.predict(image, batch_size=1, verbose=1)
-    angry, fear, happy, sad, surprise, neutral = [prob for lst in list_of_list for prob in lst]
-    return [angry, fear, happy, sad, surprise, neutral]
-
+import base64
 
 
 def detail(request, question_id):
@@ -72,23 +56,39 @@ def detail(request, question_id):
 # def demo(request):
 # 	return render(request, 'polls/demo.html')
 
+def getdata(request, inputname):
+    dirname = request.POST.get('email')
+    directory = os.path.join(os.curdir+"/UserImage", dirname)
+    if(not os.path.exists(directory)):
+        os.mkdir(directory)
+    data = request.POST.get(inputname,'')
+    if(data==''):
+        return render(request, 'polls/imageup.html', {'email': dirname})
+    data = re.sub('data:image/png;base64,','',data)
+    missing_padding = len(data) % 4
+    imgdata = base64.b64decode(data)
+    now = datetime.datetime.now()
+    filename = directory+'/'+str(now).replace(":","")+".png"
+    with open(filename, 'wb') as f:
+        f.write(imgdata)
+
 def imageup(request):
-    import base64
     if request.method == 'POST':
         dirname = request.POST.get('email')
         directory = os.path.join(os.curdir+"/UserImage", dirname)
         if(not os.path.exists(directory)):
             os.mkdir(directory)
-        data = request.POST.get('image','')
-        if(data==''):
-            return render(request, 'polls/imageup.html', {'email': dirname})
-        data = re.sub('data:image/png;base64,','',data)
-        missing_padding = len(data) % 4
-        imgdata = base64.b64decode(data)
-        now = datetime.datetime.now()
-        filename = directory+'/'+str(now).replace(":","")+".png"
-        with open(filename, 'wb') as f:
-            f.write(imgdata)
+        getdata(request, "image0")
+        getdata(request, "image1")
+        getdata(request, "image2")
+        getdata(request, "image3")
+        getdata(request, "image4")
+        getdata(request, "image5")
+        getdata(request, "image6")
+        getdata(request, "image7")
+        getdata(request, "image8")
+        getdata(request, "image9")
+        getdata(request, "image10")
         return render(request, 'polls/imageup.html', {'email': dirname})
     return render(request, 'polls/imageup.html')
 
@@ -156,4 +156,26 @@ def getimage(request):
         os.system("rm -rf Temp")
         os.system("rm -rf Temp_Align")
         return render(request, 'polls/webcam.html')
+    return render(request, 'polls/webcam.html')
+
+def uploademotion(request):
+    import base64
+    data = request.POST.get('image','')
+    if request.method == 'POST':
+        data = request.POST.get('image','')
+        if(data==''):
+            return render(request, 'polls/webcam.html')
+        tempdirectory = os.path.join(os.curdir+"/Temp")
+        directory = os.path.join(os.curdir+"/Temp/Image")
+        if(not os.path.exists(tempdirectory)):
+            os.mkdir("Temp")
+        if(not os.path.exists(directory)):
+            os.mkdir("Temp/Image")
+        data = re.sub('data:image/png;base64,','',data)
+        missing_padding = len(data) % 4
+        imgdata = base64.b64decode(data)
+        now = datetime.datetime.now()
+        filename = directory+'/'+str(now).replace(":","")+".png"
+        with open(filename, 'wb') as f:
+            f.write(imgdata)
     return render(request, 'polls/webcam.html')

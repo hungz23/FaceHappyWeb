@@ -20,13 +20,27 @@
  -->
 
 
-<form action="{% url 'polls:imageup' %}" method="post">
+<form action="{% url 'polls:imageup' %}" method="post" id="imageform">
 {% csrf_token %}
 <div class="embed-responsive embed-responsive-16by9">
   <video width="300" height="150" autoplay></video>
 </div>
-<img src="" name="myimage" class="img-responsive">
-<input type="hidden" name="image">
+<img src="" name="myimage" class="img-fluid" alt="">
+<input   type= "hidden" name="image0">
+<input   type= "hidden" name="image1">
+<input   type= "hidden" name="image2">
+<input   type= "hidden" name="image3">
+<input   type= "hidden" name="image4">
+<input   type= "hidden" name="image5">
+<input   type= "hidden" name="image6">
+<input   type= "hidden" name="image7">
+<input   type= "hidden" name="image8">
+<input   type= "hidden" name="image9">
+<input   type= "hidden" name="image10">
+
+
+
+
 <br>
 <div class="form-group">
   <label for="exampleInputEmail1">Email address</label>
@@ -40,36 +54,75 @@
 <script>
 
 
-  var errorCallback = function(e) {
-    console.log('Reeeejected!', e);
-  };
-  var video = document.querySelector('video');
-  var canvas = document.querySelector('canvas');
-  var ctx = canvas.getContext('2d');
-  var localMediaStream = null;
-  var image = new Image();
+ var errorCallback = function(e) {
+   console.log('Reeeejected!', e);
+ };
+ var video = document.querySelector('video');
+ var canvas = document.querySelector('canvas');
+ var ctx = canvas.getContext('2d');
+ var localMediaStream = null;
+ var image = new Image();
+ var imagenumber = 0;
+
+ function snapshot() {
+   inputname = "image"+String(imagenumber%10);
+   if (localMediaStream) {
+     ctx.drawImage(video,0, 0, 300, 150);
+     // "image/webp" works in Chrome.
+     // Other browsers will fall back to image/png.
+     image.src = canvas.toDataURL('image/png');
+     document.querySelector('input[name="'+inputname+'"]').value = canvas.toDataURL('image/png');
+     document.querySelector('img').src = canvas.toDataURL('image/png');
+     imagenumber = imagenumber+1;
+   }
+ }
+
+ function wait(ms){
+    var start = new Date().getTime();
+    var end = start;
+    while(end < start + ms) {
+      end = new Date().getTime();
+   }
+ }
+
+function multisnapshot(){
+  setInterval(snapshot, 300)
+  // snapshot("image0");
+  // wait(200);
+  // snapshot("image1");
+  // wait(200);
+  // snapshot("image2");
+  // wait(200);
+  // snapshot("image3");
+  // wait(200);
+  // snapshot("image4");
+  // wait(200);
+  // snapshot("image5");
+  // wait(200);
+  // snapshot("image6");
+  // wait(200);
+  // snapshot("image7");
+  // wait(200);
+  // snapshot("image8");
+  // wait(200);
+  // snapshot("image9");
+  // wait(200);
+  // snapshot("image10");
+}
+
+ video.addEventListener("click", multisnapshot, true);
+
+ navigator.getUserMedia = ( navigator.getUserMedia ||
+                        navigator.webkitGetUserMedia ||
+                        navigator.mozGetUserMedia ||
+                        navigator.msGetUserMedia);
 
 
-  function snapshot() {
-    if (localMediaStream) {
-      ctx.drawImage(video,0, 0, 300, 150);
-      // "image/webp" works in Chrome.
-      // Other browsers will fall back to image/png.
-      image.src = canvas.toDataURL('image/png');
-      document.querySelector('input[name="image"]').value = canvas.toDataURL('image/png');
-      document.querySelector('img').src = canvas.toDataURL('image/png');
-    }
-  }
-  video.addEventListener("click", snapshot, true);
-
-
-
-  // Not showing vendor prefixes or code that works cross-browser.
-  navigator.getUserMedia({video: true}, function(stream) {
-    video.src = window.URL.createObjectURL(stream);
-    localMediaStream = stream;
-  }, errorCallback);
+ // Not showing vendor prefixes or code that works cross-browser.
+ navigator.getUserMedia({video: true}, function(stream) {
+   video.src = window.URL.createObjectURL(stream);
+   localMediaStream = stream;
+ }, errorCallback);
 </script>
-<!-- <input type="submit" value="Submit" /> -->
 <button type="submit" class="btn btn-primary">Submit</button>
 </form>

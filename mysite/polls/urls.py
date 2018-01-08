@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'webcam/$', views.imageup, name='imageup'),
     url(r'align/$', views.align, name='align'),
     url(r'train/$', views.train, name='train'),
-    url(r'getvideo/$', views.getimage, name='getimage'),
+    # url(r'getvideo/$', views.getimage, name='getimage'),
+    url(r'uploademotion/$', views.uploademotion, name='uploademotion'),
     # url(r'^save/$', views.save, name='save')
 ]

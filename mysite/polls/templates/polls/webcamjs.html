@@ -9,12 +9,12 @@
 {% bootstrap_messages %}
 
 
-<form action="{% url 'polls:getimage' %}" method="post">
+<form action="{% url 'polls:uploademotion' %}" method="post">
 {% csrf_token %}
 <div class="embed-responsive embed-responsive-16by9">
   <video width="300" height="150" autoplay></video>
 </div>
-<img src="" name="myimage" class="img-responsive">
+<img src="" name="myimage" class="img-fluid" alt="">
 <input type="hidden" name="image">
 <canvas style="display:none;" width="300" height="150"></canvas>
 
@@ -43,6 +43,10 @@
  }
  video.addEventListener("click", snapshot, true);
 
+ navigator.getUserMedia = ( navigator.getUserMedia ||
+                        navigator.webkitGetUserMedia ||
+                        navigator.mozGetUserMedia ||
+                        navigator.msGetUserMedia);
 
 
  // Not showing vendor prefixes or code that works cross-browser.
