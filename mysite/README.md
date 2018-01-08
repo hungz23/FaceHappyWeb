@@ -3,4 +3,4 @@
 ### [install ansible](http://docs.ansible.com/ansible/latest/intro_installation.html)
 ### fix playbook for system and run commandline: $ansible-playbook InstallPlaybook.yaml
 ### run commandline in mysite folder:
-$export  PYTHONPATH=<path>/facenet/src
+$export  PYTHONPATH=pathto/facenet/src
