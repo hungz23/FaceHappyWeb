@@ -1,0 +1,68 @@
+---
+- hosts: localhost
+  remote_user: root
+
+  tasks:
+  - name: install Theano dependences python-numpy
+    yum:
+      name: python-numpy
+      update_cache: yes
+  - name: install Theano dependences python-scipy
+    yum:
+      name: python-scipy
+      update_cache: yes
+  - name: install Theano dependences python-dev
+    yum:
+      name: python-dev
+      update_cache: yes
+  - name: install Theano dependences python-nose
+    yum:
+      name: python-nose
+      update_cache: yes
+  - name: install Theano dependences g++
+    yum:
+      name: g++
+      update_cache: yes
+  - name: install Theano dependences git
+    yum:
+      name: git
+      update_cache: yes
+  - name: install Theano dependences libopenblas-dev
+    yum:
+      name: libopenblas-dev
+      update_cache: yes
+  - name: install Theano dependences graphviz
+    yum:
+      name: graphviz
+      update_cache: yes
+  - name: install Theano
+    pip:
+      name: Theano
+  - name: install Keras
+    pip:
+      name: keras
+  - name: install Django
+    pip:
+      name: django
+      version: 1.11
+  - name: install django-sslserver
+    pip:
+      name: django-sslserver
+  - name: install celery
+    pip:
+      name: celery
+  - name: install django-jquery
+    pip:
+      name: django-jquery
+  - name: install django-bootstrap3
+    pip:
+      name: django-bootstrap3
+  - name: install redis
+    pip:
+      name: redis
+  - name: install redis-server
+    yum:
+      name: redis-server
+  - name: install facenet requirements
+    pip:
+      requirements: /vagrant/django/FaceHappyWeb/mysite/facenet/requirements.txt

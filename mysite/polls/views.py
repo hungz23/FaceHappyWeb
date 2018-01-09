@@ -124,17 +124,17 @@ def makeEmotion(email, L):
 def getimage(request):
     import base64
     if request.method == 'POST':
+        now = datetime.datetime.now()
         data = request.POST.get('image','')
         if(data==''):
             return render(request, 'polls/webcam.html')
         directory = os.path.join(os.curdir+"/Temp/Image")
         os.mkdir("Temp")
-        os.mkdir("Temp/Image")
-        aligneddirectory = os.path.join(os.curdir+"/Temp_Align/Image")
+        os.mkdir("Temp/"+str(now).replace(":",""))
+        aligneddirectory = os.path.join(os.curdir+"/Temp_Align/"+str(now).replace(":",""))
         data = re.sub('data:image/png;base64,','',data)
         missing_padding = len(data) % 4
         imgdata = base64.b64decode(data)
-        now = datetime.datetime.now()
         filename = directory+'/'+str(now).replace(":","")+".png"
         alignedfilename = aligneddirectory + '/'+str(now).replace(":","")+".png"
         with open(filename, 'wb') as f:
@@ -158,23 +158,28 @@ def getimage(request):
         return render(request, 'polls/webcam.html')
     return render(request, 'polls/webcam.html')
 
+def standardstring(string):
+    return string.replace(":","").replace(" ","")
+
 def uploademotion(request):
     import base64
     data = request.POST.get('image','')
     if request.method == 'POST':
+        now = datetime.datetime.now()
+        nowname = standardstring(str(now))
         data = request.POST.get('image','')
         if(data==''):
             return render(request, 'polls/webcam.html')
         tempdirectory = os.path.join(os.curdir+"/Temp")
-        directory = os.path.join(os.curdir+"/Temp/Image")
+        directory = os.path.join(os.curdir+"/Temp/"+nowname+"/"+nowname)
         if(not os.path.exists(tempdirectory)):
             os.mkdir("Temp")
         if(not os.path.exists(directory)):
-            os.mkdir("Temp/Image")
+            os.mkdir("Temp/"+nowname)
+            os.mkdir("Temp/"+nowname+"/"+nowname)
         data = re.sub('data:image/png;base64,','',data)
         missing_padding = len(data) % 4
         imgdata = base64.b64decode(data)
-        now = datetime.datetime.now()
         filename = directory+'/'+str(now).replace(":","")+".png"
         with open(filename, 'wb') as f:
             f.write(imgdata)

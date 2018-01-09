@@ -25,11 +25,10 @@ from celery.task.schedules import crontab
 from celery.decorators import periodic_task
 
 
-def AlignImage():
-    os.system("python ./facenet/src/align/align_dataset_mtcnn.py\
-     ./Temp\
-     ./Temp_Align\
-     --image_size 182 --margin 44")
+def AlignImage(tempdirectory, alignedtempdirectory):
+    command = "python ./facenet/src/align/align_dataset_mtcnn.py " +tempdirectory + " " +alignedtempdirectory + " " +"--image_size 182 --margin 44"
+    print command
+    os.system(command)
     os.system("rm ./Temp_Align/bounding*")
     os.system("rm ./Temp_Align/revision*")
 
@@ -70,14 +69,19 @@ def parser(path):
 
 @periodic_task(run_every=(crontab(minute='*/1')), name="FaceDetect", ignore_result=True)
 def FaceDetect():
-    AlignImage()
+    processdirectory = os.listdir("./Temp")[0] #get first folder of Temp Images
+    tempdirectory = "./Temp/" + processdirectory
+    alignedtempdirectory = "./Temp_Align/"
+    AlignImage(tempdirectory, alignedtempdirectory)
     os.system("python ./facenet/src/classifier.py\
      CLASSIFY Temp_Align/\
      ModelsForTrain/20170511-185253.pb\
      models/lfw_classifier.pkl --batch 5")
+    # os.system("python ./facenet/src/classifier.py CLASSIFY " + alignedtempdirectory +
+    # " ModelsForTrain/20170511-185253.pb models/lfw_classifier.pkl --batch 5 ")
     rows = parser(os.path.join(os.curdir+"/result.txt"))
     for row in rows:
         makeEmotion(row[0], row[1])
     #Delete Processed Files
-    os.system("rm -rf Temp")
-    os.system("rm -rf Temp_Align")
+    os.system("rm -rf " + tempdirectory)
+    os.system("rm -rf " + alignedtempdirectory)

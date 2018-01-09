@@ -138,6 +138,8 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Singapore'
+# export PYTHONPATH=/vagrant/django/FaceHappyWeb/mysite/facenet/src
 # celery -A polls worker -l info
+# using other process (terminal)
 # celery -A polls beat -l info
 # for run
