@@ -67,7 +67,7 @@ def parser(path):
 
 
 
-@periodic_task(run_every=(crontab(minute='*/1')), name="FaceDetect", ignore_result=True)
+@periodic_task(run_every=(crontab(minute='*/30')), name="FaceDetect", ignore_result=True)
 def FaceDetect():
     processdirectory = os.listdir("./Temp")[0] #get first folder of Temp Images
     tempdirectory = "./Temp/" + processdirectory
