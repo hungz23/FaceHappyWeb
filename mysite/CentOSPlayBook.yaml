@@ -85,4 +85,10 @@
       name: redis-server
   - name: install facenet requirements
     pip:
-      requirements: requirements.txt
+      requirements: /home/vagrant/newfaceid/FaceNetMememojiApp/mysite/requirements.txt
+  - name: install opencv
+    yum:
+      name: opencv
+  - name: install libSM
+    yum:
+      name: libSM
