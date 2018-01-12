@@ -23,10 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'f-n0vf25u4siwzt!&a-yxjhs2@$rwd(#__bper9ztu63u71oda'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don't run with debug turned on in produc, '192.168.33.12']
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.33.10', '0.0.0.0', '192.168.33.11']
+ALLOWED_HOSTS = ['192.168.33.10', '0.0.0.0', '192.168.33.11','192.168.33.12']
 
 
 # Application definition

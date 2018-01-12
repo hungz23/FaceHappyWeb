@@ -3,9 +3,9 @@
   remote_user: root
 
   tasks:
-  - name: install pip
+  - name: install python-pip
     yum:
-      name: pip
+      name: python-pip
       update_cache: yes
   - name: install Theano dependences numpy
     yum:
@@ -13,7 +13,7 @@
       update_cache: yes
   - name: install Theano dependences scipy
     yum:
-      name: python-scipy
+      name: scipy
       update_cache: yes
   - name: install Theano dependences python-devel
     yum:
@@ -82,7 +82,7 @@
       name: redis
   - name: install redis-server
     yum:
-      name: redis-server
+      name: redis
   - name: install facenet requirements
     pip:
       requirements: /home/vagrant/newfaceid/FaceNetMememojiApp/mysite/requirements.txt
