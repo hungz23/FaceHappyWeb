@@ -3,6 +3,10 @@
   remote_user: root
 
   tasks:
+  - name: install pip
+    apt:
+      name: python-pip
+      update_cache: yes
   - name: install Theano dependences python-numpy
     apt:
       name: python-numpy

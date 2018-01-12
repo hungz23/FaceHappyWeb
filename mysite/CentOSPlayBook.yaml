@@ -3,37 +3,57 @@
   remote_user: root
 
   tasks:
-  - name: install Theano dependences python-numpy
+  - name: install pip
     yum:
-      name: python-numpy
+      name: pip
       update_cache: yes
-  - name: install Theano dependences python-scipy
+  - name: install Theano dependences numpy
+    yum:
+      name: numpy
+      update_cache: yes
+  - name: install Theano dependences scipy
     yum:
       name: python-scipy
       update_cache: yes
-  - name: install Theano dependences python-dev
+  - name: install Theano dependences python-devel
     yum:
-      name: python-dev
+      name: python-devel
       update_cache: yes
   - name: install Theano dependences python-nose
     yum:
       name: python-nose
       update_cache: yes
-  - name: install Theano dependences g++
-    yum:
-      name: g++
-      update_cache: yes
   - name: install Theano dependences git
     yum:
       name: git
       update_cache: yes
-  - name: install Theano dependences libopenblas-dev
+  - name: install Theano dependences python-setuptools
     yum:
-      name: libopenblas-dev
+      name: python-setuptools
       update_cache: yes
-  - name: install Theano dependences graphviz
+  - name: install Theano dependences gcc
     yum:
-      name: graphviz
+      name: gcc
+      update_cache: yes
+  - name: install Theano dependences gcc-gfortran
+    yum:
+      name: gcc-gfortran
+      update_cache: yes
+  - name: install Theano dependences gcc-c++
+    yum:
+      name: gcc-c++
+      update_cache: yes
+  - name: install Theano dependences blas-devel
+    yum:
+      name: blas-devel
+      update_cache: yes
+  - name: install Theano dependences lapack-devel
+    yum:
+      name: lapack-devel
+      update_cache: yes
+  - name: install Theano dependences atlas-devel
+    yum:
+      name: atlas-devel
       update_cache: yes
   - name: install Theano
     pip:
@@ -65,4 +85,4 @@
       name: redis-server
   - name: install facenet requirements
     pip:
-      requirements: /vagrant/django/FaceHappyWeb/mysite/facenet/requirements.txt
+      requirements: requirements.txt
