@@ -70,3 +70,5 @@
   - name: install facenet requirements
     pip:
       requirements: /vagrant/django/FaceHappyWeb/mysite/facenet/requirements.txt
+      # change your absolute path to <absolute path to git directory>/mysite/requirements.txt
+      

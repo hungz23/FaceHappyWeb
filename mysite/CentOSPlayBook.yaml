@@ -86,6 +86,7 @@
   - name: install facenet requirements
     pip:
       requirements: /home/vagrant/newfaceid/FaceNetMememojiApp/mysite/requirements.txt
+      # change your absolute path to <absolute path to git directory>/mysite/requirements.txt
   - name: install opencv
     yum:
       name: opencv

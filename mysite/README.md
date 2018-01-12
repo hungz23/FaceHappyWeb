@@ -1,7 +1,7 @@
 #Step 1: Install Package
 ### [install python-pip](https://pip.pypa.io/en/stable/installing/)
 ### [install ansible](http://docs.ansible.com/ansible/latest/intro_installation.html)
-### fix playbook for system and run commandline: $ansible-playbook InstallPlaybook.yaml
+### fix playbook for system and run commandline: $ansible-playbook CentOSPlaybook.yaml or $ansible-playbook UbuntuPlaybook.yaml
 #Step 2: Setup Environment
 ### Go to this directory
 ### Setup Redis Server: $systemctl status redis.service
